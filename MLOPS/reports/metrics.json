@@ -1,0 +1,10 @@
+{
+  "accuracy": 0.9553,
+  "f1": 0.191,
+  "precision": 0.1056,
+  "recall": 1.0,
+  "pr_auc": 0.342,
+  "n_alerts": 2500,
+  "n_proxy_fraud": 264,
+  "alert_threshold": 0.48
+}

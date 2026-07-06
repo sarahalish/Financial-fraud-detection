@@ -1,0 +1,18 @@
+2026-07-07 01:29:14,675 | INFO     | pipeline | === AML fraud detection pipeline started ===
+2026-07-07 01:29:14,827 | INFO     | src.data_ingestion | Loaded 2000 clients and 50000 transactions
+2026-07-07 01:29:14,857 | INFO     | src.data_ingestion | Merged dataset shape: (50000, 23)
+2026-07-07 01:29:14,923 | INFO     | src.preprocessing | Behavioral matrix shape: (50000, 4)
+2026-07-07 01:29:14,937 | INFO     | src.train | Fitting IsolationForest with params: {'n_estimators': 300, 'max_samples': 256, 'contamination': 'auto', 'random_state': 42, 'n_jobs': -1}
+2026-07-07 01:29:17,647 | INFO     | src.train | Dynamic alert threshold (p95): 0.4800
+2026-07-07 01:29:17,684 | INFO     | src.train | Alerts flagged in training data: 2500
+2026-07-07 01:29:17,847 | INFO     | src.train | Model bundle saved to C:\Users\sarah\Downloads\aml-fraud-detection (1)\aml-fraud-detection\models\aml_model_bundle.joblib
+2026-07-07 01:29:18,587 | INFO     | pipeline | Scored training data saved to C:\Users\sarah\Downloads\aml-fraud-detection (1)\aml-fraud-detection\data\processed\scored_training_data.csv
+2026-07-07 01:29:18,662 | INFO     | src.evaluate | Evaluation metrics: {'accuracy': 0.9553, 'f1': 0.191, 'precision': 0.1056, 'recall': 1.0, 'pr_auc': 0.342, 'n_alerts': 2500, 'n_proxy_fraud': 264, 'alert_threshold': 0.48}
+2026-07-07 01:29:19,870 | INFO     | src.evaluate | Diagnostics figure saved to C:\Users\sarah\Downloads\aml-fraud-detection (1)\aml-fraud-detection\reports\evaluation_plots.png
+2026-07-07 01:29:19,871 | INFO     | pipeline | === Pipeline finished successfully ===
+2026-07-07 01:29:25,982 | INFO     | src.inference | Loaded model bundle trained at 2026-07-06T22:29:17.686646+00:00
+2026-07-07 01:29:26,102 | INFO     | src.data_ingestion | Merged dataset shape: (50000, 23)
+2026-07-07 01:29:26,138 | INFO     | src.preprocessing | Behavioral matrix shape: (50000, 4)
+2026-07-07 01:29:27,227 | INFO     | src.inference | Scored 50000 transactions — 2500 alerts (5.00%)
+2026-07-07 01:29:27,959 | INFO     | inference | Scored data written to reports\scored_new_data.csv
+2026-07-07 01:29:27,966 | INFO     | inference | Refined alert queue: 638 high-priority cases

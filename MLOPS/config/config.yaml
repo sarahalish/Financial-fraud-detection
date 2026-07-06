@@ -1,0 +1,57 @@
+# =============================================================
+# AML/KYC Fraud Detection — Pipeline Configuration
+# Single source of truth for paths, features, and hyperparameters.
+# =============================================================
+
+paths:
+  clients_csv: data/raw/clients_with_fatf_ofac.csv
+  transactions_csv: data/raw/transactions_with_fatf_ofac.csv
+  processed_dir: data/processed
+  models_dir: models
+  reports_dir: reports
+  logs_dir: logs
+
+data:
+  merge_key: client_id
+  merge_suffixes: ["_tx", "_client"]
+
+features:
+  # Behavioral engine (Isolation Forest inputs)
+  behavioral:
+    - amount_log
+    - structuring_pattern_flag
+    - rapid_movement_flag
+    - trade_mispricing_flag
+  # Static/contextual risk (simple average of binary flags)
+  # NOTE: after the merge, 'fatf_country_flag' clashes (exists in both files)
+  # and becomes fatf_country_flag_tx / fatf_country_flag_client.
+  # 'ofac_country_flag' comes only from the clients file (transactions carry
+  # 'ofac_match_flag'), so it keeps its original name.
+  static:
+    - pep_flag
+    - sanctions_flag
+    - fatf_country_flag_tx
+    - ofac_country_flag
+
+model:
+  isolation_forest:
+    n_estimators: 300
+    max_samples: 256        # subsampling — robust to swamping/masking
+    contamination: auto
+    random_state: 42
+    n_jobs: -1
+
+scoring:
+  behavioral_weight: 0.7
+  static_weight: 0.3
+  alert_percentile: 95      # top 5% of final risk becomes an alert
+  peer_deviation_threshold: 2.0
+  peer_group_column: sector
+
+evaluation:
+  # Proxy ground-truth (no verified labels available for this synthetic data):
+  # fraud := (structuring OR rapid movement) AND (PEP OR sanctions OR FATF country)
+  enabled: true
+
+artifacts:
+  model_bundle: aml_model_bundle.joblib

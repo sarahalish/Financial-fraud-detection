@@ -1,0 +1,11 @@
+# 1. TRAIN — ingest data, fit model, evaluate, save the model bundle
+python run_pipeline.py
+
+# 2. PREDICT — score raw data with the saved model
+python predict.py --transactions data/raw/transactions_with_fatf_ofac.csv --clients data/raw/clients_with_fatf_ofac.csv --output reports/scored_new_data.csv
+
+# 3. EXPLORE — interactive dashboard in your browser (stop with Ctrl+C)
+python -m streamlit run dashboard.py
+
+# 4. SHARE — generate the standalone HTML report to send to someone
+python export_report.py
